@@ -21,8 +21,10 @@ for i in range(0, 17):
   print(k, (result / n) * 1e+9)
 
 
+id = 1
 for (key, plot) in plots.items():
-  plt.plot(labels, plot, label=key, linewidth=2)
+  plt.plot(labels, plot, label=key, gid='plot_'+str(id), linewidth=2)
+  id += 1
 
 plt.legend(loc="upper left")
 plt.title("addition")

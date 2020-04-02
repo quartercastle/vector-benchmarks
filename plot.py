@@ -8,7 +8,7 @@ config['font.family'] = 'menlo'
 
 def collect():
     data = {}
-    ps = subprocess.Popen('go test -bench=.', stdout=subprocess.PIPE, shell=True)
+    ps = subprocess.Popen('go test -bench=Addition', stdout=subprocess.PIPE, shell=True)
 
     while True:
         line = ps.stdout.readline().rstrip()
@@ -58,8 +58,8 @@ def plot(data):
         plt.title(feat)
         plt.ylabel('ns/op')
         plt.xlabel('dimensions')
-        # plt.yscale('log')
-        # plt.xscale('log')
+        plt.yscale('log')
+        plt.xscale('log')
         plt.savefig('plots/'+feat+'.svg', transparent=True)
 
 

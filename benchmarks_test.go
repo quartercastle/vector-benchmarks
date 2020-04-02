@@ -48,14 +48,17 @@ func BenchmarkAddition(b *testing.B) {
 	}
 
 	n := int(math.Pow(2, runs))
-	v1, v2 := randomListOfFloat64(n), randomListOfFloat64(n)
+	sample1, sample2 := randomListOfFloat64(n), randomListOfFloat64(n)
 
 	for _, addition := range additions {
 		for k := 0.; k <= runs; k++ {
 			n := int(math.Pow(2, k))
 			b.Run(fmt.Sprintf("%s/%d", addition.name, n), func(b *testing.B) {
+				b.ReportAllocs()
+				v1, v2 := vec(sample1[:n]).Clone(), vec(sample2[:n]).Clone()
+				b.ResetTimer()
 				for i := 0; i < b.N; i++ {
-					addition.exec(n, v1[:n], v2[:n])
+					addition.exec(n, v1, v2)
 				}
 			})
 		}
@@ -162,13 +165,14 @@ func AvgGonum(winds []*mat.VecDense) []float64 {
 
 func generateWinds() [][]float64 {
 	return [][]float64{
-		{24, 539},
-		{25, 335},
-		{3, 578},
+		{24, 63},
+		{25, 53},
+		{3, 35},
 	}
 }
 
-func BenchmarkAvgRaw(b *testing.B) {
+func BenchmarkAvgRawStruct(b *testing.B) {
+	b.ReportAllocs()
 	winds := generateWinds()
 	ws := make([]vec2d, len(winds))
 
@@ -183,6 +187,7 @@ func BenchmarkAvgRaw(b *testing.B) {
 }
 
 func BenchmarkAvgRawList(b *testing.B) {
+	b.ReportAllocs()
 	winds := generateWinds()
 
 	b.ResetTimer()
@@ -192,6 +197,7 @@ func BenchmarkAvgRawList(b *testing.B) {
 }
 
 func BenchmarkAvgVector(b *testing.B) {
+	b.ReportAllocs()
 	winds := generateWinds()
 	ws := make([]vec, len(winds))
 
@@ -206,6 +212,7 @@ func BenchmarkAvgVector(b *testing.B) {
 }
 
 func BenchmarkAvgGonum(b *testing.B) {
+	b.ReportAllocs()
 	winds := generateWinds()
 	ws := make([]*mat.VecDense, len(winds))
 
