@@ -8,7 +8,7 @@ config['font.family'] = 'menlo'
 
 def collect():
     data = {}
-    ps = subprocess.Popen('go test -bench=Addition', stdout=subprocess.PIPE, shell=True)
+    ps = subprocess.Popen('go test -bench=AverageWind', stdout=subprocess.PIPE, shell=True)
 
     while True:
         line = ps.stdout.readline().rstrip()
@@ -41,25 +41,25 @@ def plot(data):
         plt.figure(figsize=(10, 5))
 
         for key, impl in data[feat].items():
-            colors = {
-                'gonum': 'red',
-                'vector_(inline)': 'green',
-                'vector_(gonum_style)': 'blue',
-                'vector_(immutable)': 'orange',
-            }
+            # colors = {
+            #     'gonum': 'red',
+            #     'vector_(inline)': 'green',
+            #     'vector_(gonum_style)': 'blue',
+            #     'vector_(immutable)': 'orange',
+            # }
             plt.plot(
                 impl['labels'],
                 impl['values'],
                 label=key.replace('_', ' '),
-                color=colors[key],
+                # color=colors[key],
                 linewidth=2)
 
         plt.legend(loc="upper left")
         plt.title(feat)
         plt.ylabel('ns/op')
-        plt.xlabel('dimensions')
-        plt.yscale('log')
-        plt.xscale('log')
+        plt.xlabel('winds')
+        # plt.yscale('log')
+        # plt.xscale('log')
         plt.savefig('plots/'+feat+'.svg', transparent=True)
 
 
